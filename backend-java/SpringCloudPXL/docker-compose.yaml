@@ -1,0 +1,50 @@
+services:
+  employeeservice_db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: employeeservice_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql_data/employee:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  departmentservice_db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: departmentservice_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql_data/department:/var/lib/mysql
+    ports:
+      - "3307:3307"
+  organizationservice_db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: organizationservice_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql_data/organization:/var/lib/mysql
+    ports:
+      - "3308:3308"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    depends_on:
+      - employeeservice_db
+      - departmentservice_db
+      - organizationservice_db
+    environment:
+      PMA_HOSTS: employeeservice_db, departmentservice_db, organizationservice_db
+
+      MYSQL_ROOT_PASSWORD: toor
+    ports:
+      - "8083:80"
