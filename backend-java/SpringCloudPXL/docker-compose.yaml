@@ -1,9 +1,9 @@
 services:
   employeeservice_db:
-    image: mysql:5.7.44
+    image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_ROOT_PASSWORD: hahaFunny
       MYSQL_DATABASE: employeeservice_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
@@ -14,10 +14,10 @@ services:
 
 
   departmentservice_db:
-    image: mysql:5.7.44
+    image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_ROOT_PASSWORD: hahaFunny
       MYSQL_DATABASE: departmentservice_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
@@ -28,10 +28,10 @@ services:
 
 
   organizationservice_db:
-    image: mysql:5.7.44
+    image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_ROOT_PASSWORD: hahaFunny
       MYSQL_DATABASE: organizationservice_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
@@ -40,6 +40,21 @@ services:
     ports:
       - "3308:3306"
 
+
+  notificationservice_db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: hahaFunny
+      MYSQL_DATABASE: notificationservice_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql_data/notificationservice_db:/var/lib/mysql
+    ports:
+      - "3309:3306"
+
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     restart: always
@@ -47,8 +62,9 @@ services:
       - employeeservice_db
       - departmentservice_db
       - organizationservice_db
+      - notificationservice_db
     environment:
-      PMA_HOSTS: employeeservice_db,departmentservice_db,organizationservice_db
-      MYSQL_ROOT_PASSWORD: toor
+      PMA_HOSTS: employeeservice_db,departmentservice_db,organizationservice_db,notificationservice_db
+      MYSQL_ROOT_PASSWORD: hahaFunny
     ports:
       - "8081:80"

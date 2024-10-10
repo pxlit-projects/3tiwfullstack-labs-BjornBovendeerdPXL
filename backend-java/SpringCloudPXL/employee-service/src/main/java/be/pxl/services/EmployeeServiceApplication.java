@@ -4,7 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * EmployeeServiceApplication
+ * Hello world!
+ *
  */
 @SpringBootApplication
 public class EmployeeServiceApplication
