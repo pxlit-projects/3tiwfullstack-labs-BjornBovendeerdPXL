@@ -27,7 +27,7 @@ public class EmployeeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void addNewEmployee(@RequestBody EmployeeRequest request) {
-        employeeService.addEmployee(request);
+        employeeService.createEmployee(request);
     }
 
     @PutMapping(path = "/{id}")

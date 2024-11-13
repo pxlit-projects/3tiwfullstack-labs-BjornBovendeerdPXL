@@ -5,60 +5,25 @@ import be.pxl.services.domain.dto.NotificationRequest;
 import be.pxl.services.domain.dto.NotificationResponse;
 import be.pxl.services.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationService implements INotificationService {
-    private final NotificationRepository notificationRepository;
 
+    /**
+     * Fe using a Mail API to send the notification would be applicable
+     *
+     * @param notification
+     */
     @Override
-    public List<NotificationResponse> getAllNotifications() {
-        return notificationRepository.findAll().stream().map(notification -> mapToNotificationResponse(notification)).toList();
-    }
-
-    @Override
-    public NotificationResponse getNotificationById(Long id) {
-        Notification entity = notificationRepository.getReferenceById(id);
-        return mapToNotificationResponse(entity);
-    }
-
-    private NotificationResponse mapToNotificationResponse(Notification entity) {
-        return NotificationResponse.builder()
-                .from(entity.getFrom())
-                .to(entity.getTo())
-                .subject(entity.getSubject())
-                .message(entity.getMessage())
-                .build();
-    }
-
-    @Override
-    public void addNotification(NotificationRequest notification) {
-        Notification entity = Notification.builder()
-                .from(notification.getFrom())
-                .to(notification.getTo())
-                .subject(notification.getSubject())
-                .message(notification.getMessage())
-                .build();
-        notificationRepository.save(entity);
-    }
-
-    @Override
-    public void updateNotification(Long id, NotificationRequest notification) {
-        Notification entity = notificationRepository.getReferenceById(id);
-        entity.setFrom(notification.getFrom());
-        entity.setTo(notification.getTo());
-        entity.setSubject(notification.getSubject());
-        entity.setMessage(notification.getMessage());
-
-        notificationRepository.save(entity);
-    }
-
-    @Override
-    public void deleteNotification(Long id) {
-        notificationRepository.deleteById(id);
-        notificationRepository.flush();
+    public void sendMessage(Notification notification) {
+        log.info("Receiving notification...");
+        log.info("Sending... {}", notification.getMessage());
+        log.info("TO {}", notification.getSender());
     }
 }

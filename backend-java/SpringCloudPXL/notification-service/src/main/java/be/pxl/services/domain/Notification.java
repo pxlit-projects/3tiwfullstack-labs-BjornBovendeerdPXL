@@ -17,10 +17,6 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "from_sender")
-    private String from;
-    @Column(name = "to_receiver")
-    private String to;
-    private String subject;
+    private String sender;
     private String message;
 }
