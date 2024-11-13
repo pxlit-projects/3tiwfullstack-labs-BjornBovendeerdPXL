@@ -1,6 +1,6 @@
-package be.pxl.be;
+package be.pxl.services.domain;
 
-import be.pxl.services.domain.Employee;
+import be.pxl.services.repository.EmployeeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,11 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -28,6 +33,9 @@ public class EmployeeTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @Container
     private static MySQLContainer sqlContainer = new MySQLContainer("mysql:5.7.37");
 
@@ -39,18 +47,20 @@ public class EmployeeTests {
     }
 
     @Test
-    public void testCreateEmployee() {
+    public void testCreateEmployee() throws Exception {
 
         Employee employee = Employee.builder()
                 .age(24)
                 .name("jan")
                 .position("student")
                 .build();
+        String employeeString = objectMapper.writeValueAsString(employee);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/employee")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(employee))
+                        .content(employeeString))
                 .andExpect(status().isCreated());
-    }
 
+        assertEquals(1, employeeRepository.findAll().size());
+    }
 }
